@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: arriendo-flexible-bot
+    runtime: python
+    buildCommand: pip install -r requirements.txt && python scripts/process_chats.py
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: META_VERIFY_TOKEN
+        sync: false
+      - key: META_ACCESS_TOKEN
+        sync: false
+      - key: META_PHONE_NUMBER_ID
+        sync: false
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_CHAT_ID
+        sync: false
+      - key: MAX_RESPONSE_MINUTES
+        value: "30"

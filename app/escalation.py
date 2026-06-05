@@ -1,0 +1,67 @@
+"""
+Sistema de escalación invisible.
+Cuando el bot no puede resolver algo, notifica a Marcela por Telegram
+y envía un mensaje puente al cliente para ganar tiempo.
+"""
+import httpx
+from app.config import TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
+
+TELEGRAM_API = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}"
+
+ESCALATION_KEYWORDS = [
+    "problema", "reclamo", "queja", "molest", "enojad", "furioso",
+    "legal", "abogado", "tribunal", "denuncia", "multa",
+    "gotear", "inundación", "inundacion", "incendio", "robo",
+    "daño", "daños", "accidente", "emergencia", "urgente",
+    "no funciona", "roto", "rota", "descompuesto",
+    "no pago", "no puedo pagar", "sin dinero",
+    "me voy", "me retiro", "abandono", "terminar contrato",
+    "devolver", "garantía", "garantia",
+]
+
+BRIDGE_MESSAGES = [
+    "Déjame revisar tu caso y te respondo en unos minutos.",
+    "Ya lo reviso y te respondo enseguida.",
+    "Dame un momento que lo verifico y te cuento.",
+]
+
+
+def should_escalate(message: str) -> bool:
+    """Determina si un mensaje debe ser escalado a Marcela."""
+    msg_lower = message.lower()
+    return any(kw in msg_lower for kw in ESCALATION_KEYWORDS)
+
+
+def get_bridge_message(client_name: str) -> str:
+    """Mensaje que se envía al cliente mientras Marcela toma el control."""
+    first_name = client_name.split()[0] if client_name else ""
+    greeting = f"{first_name}, " if first_name else ""
+    return f"{greeting}déjame revisar tu caso y te respondo en unos minutos."
+
+
+async def notify_marcela(
+    client_name: str,
+    client_phone: str,
+    client_message: str,
+    conversation_context: str
+) -> bool:
+    """Envía alerta a Marcela por Telegram con todo el contexto."""
+    text = (
+        f"🔔 *ESCALACIÓN REQUERIDA*\n\n"
+        f"👤 *Cliente:* {client_name}\n"
+        f"📱 *Teléfono:* {client_phone}\n\n"
+        f"💬 *Mensaje del cliente:*\n_{client_message}_\n\n"
+        f"📋 *Contexto reciente:*\n{conversation_context}\n\n"
+        f"⏰ Tienes 30 minutos para responder."
+    )
+
+    async with httpx.AsyncClient() as http:
+        resp = await http.post(
+            f"{TELEGRAM_API}/sendMessage",
+            json={
+                "chat_id": TELEGRAM_CHAT_ID,
+                "text": text,
+                "parse_mode": "Markdown"
+            }
+        )
+        return resp.status_code == 200
