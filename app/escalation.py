@@ -11,12 +11,12 @@ TELEGRAM_API = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}"
 ESCALATION_KEYWORDS = [
     "problema", "reclamo", "queja", "molest", "enojad", "furioso",
     "legal", "abogado", "tribunal", "denuncia", "multa",
-    "gotear", "inundación", "inundacion", "incendio", "robo",
+    "gotera", "gotear", "inundación", "inundacion", "incendio", "robo",
     "daño", "daños", "accidente", "emergencia", "urgente",
-    "no funciona", "roto", "rota", "descompuesto",
-    "no pago", "no puedo pagar", "sin dinero",
-    "me voy", "me retiro", "abandono", "terminar contrato",
-    "devolver", "garantía", "garantia",
+    "no funciona", "roto", "rota", "descompuesto", "se rompió", "se rompio",
+    "no pago", "no puedo pagar", "sin dinero", "dificultad",
+    "me voy", "me retiro", "abandono", "terminar contrato", "termino contrato",
+    "devolver", "garantía", "garantia", "me voy a ir", "quiero salir",
 ]
 
 BRIDGE_MESSAGES = [
@@ -47,12 +47,12 @@ async def notify_marcela(
 ) -> bool:
     """Envía alerta a Marcela por Telegram con todo el contexto."""
     text = (
-        f"🔔 *ESCALACIÓN REQUERIDA*\n\n"
-        f"👤 *Cliente:* {client_name}\n"
-        f"📱 *Teléfono:* {client_phone}\n\n"
-        f"💬 *Mensaje del cliente:*\n_{client_message}_\n\n"
-        f"📋 *Contexto reciente:*\n{conversation_context}\n\n"
-        f"⏰ Tienes 30 minutos para responder."
+        f"🔔 ESCALACION REQUERIDA\n\n"
+        f"Cliente: {client_name}\n"
+        f"Telefono: {client_phone}\n\n"
+        f"Mensaje del cliente:\n{client_message}\n\n"
+        f"Contexto reciente:\n{conversation_context}\n\n"
+        f"Tienes 30 minutos para responder."
     )
 
     async with httpx.AsyncClient() as http:
@@ -61,7 +61,6 @@ async def notify_marcela(
             json={
                 "chat_id": TELEGRAM_CHAT_ID,
                 "text": text,
-                "parse_mode": "Markdown"
             }
         )
         return resp.status_code == 200
