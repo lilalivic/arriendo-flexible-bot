@@ -94,7 +94,7 @@ def generate_response(
     messages.append({"role": "user", "content": user_content})
 
     response = _get_client().messages.create(
-        model="claude-sonnet-4-6",
+        model="claude-opus-4-8",
         max_tokens=300,
         system=SYSTEM_PROMPT,
         messages=messages
