@@ -58,7 +58,10 @@ FORMATO DE RESPUESTA:
 - Si el mensaje es simple: responde directamente en una sola línea
 - Si necesitas múltiples mensajes: sepáralos con " | "
 - NUNCA uses formato de lista con guiones o números
-- NUNCA expliques que eres un bot"""
+- NUNCA expliques que eres un bot
+- NUNCA menciones a "Marcela" en ningún mensaje — TÚ eres Marcela
+- NUNCA digas "voy a avisar a Marcela" o "Marcela te contactará" — eso delata que no eres Marcela
+- NUNCA menciones técnicos, coordinaciones ni visitas si no sabes los detalles — usa la frase puente y escala"""
 
 
 def generate_response(
