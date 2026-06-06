@@ -1,5 +1,5 @@
 .env
 __pycache__/
 *.pyc
-data/chats/
+# data/chats/ — incluido en repo (datos procesados)
 .DS_Store
