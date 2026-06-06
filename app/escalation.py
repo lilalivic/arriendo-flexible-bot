@@ -40,7 +40,7 @@ def get_bridge_message(client_name: str, message: str) -> str:
     first_name = client_name.split()[0] if client_name else ""
     greeting = f"{first_name}, " if first_name else ""
     if is_physical_problem(message):
-        return f"{greeting}dame un momento que lo reviso. Mientras tanto, ¿puedes enviarme fotos o un video del problema?"
+        return f"{greeting}dame un momento que lo reviso. ¿Puedes enviarme fotos o un video del problema?"
     return f"{greeting}déjame revisar tu caso y te respondo en unos minutos."
 
 

@@ -26,7 +26,7 @@ async def receive_message(
     ProfileName: Optional[str] = Form(None),
 ):
     if not From or not Body:
-        return PlainTextResponse("ok")
+        return PlainTextResponse("")
 
     client_phone = From
     client_text = Body.strip()
@@ -39,7 +39,7 @@ async def receive_message(
         await send_whatsapp_message(client_phone, bridge)
         context_summary = _build_context_summary(history, client_text)
         await notify_marcela(client_name, client_phone, client_text, context_summary)
-        return PlainTextResponse("ok")
+        return PlainTextResponse("")
 
     response_text = generate_response(client_text, client_name, history)
 
@@ -51,7 +51,7 @@ async def receive_message(
     for part in parts:
         await send_whatsapp_message(client_phone, part)
 
-    return PlainTextResponse("ok")
+    return PlainTextResponse("")
 
 
 async def send_whatsapp_message(to: str, text: str):
