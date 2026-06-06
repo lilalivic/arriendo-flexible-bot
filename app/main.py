@@ -30,7 +30,12 @@ async def receive_message(
 
     client_phone = From
     client_text = Body.strip()
-    client_name = ProfileName or From
+    raw_name = ProfileName or ""
+    # Descartar nombres que son números de teléfono o placeholders de sandbox
+    if raw_name.startswith("+") or raw_name.startswith("whatsapp:") or raw_name.lower() in ("sandbox", "arriendo", ""):
+        client_name = ""
+    else:
+        client_name = raw_name
 
     history = conversation_history.get(client_phone, [])
 
