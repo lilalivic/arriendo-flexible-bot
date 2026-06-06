@@ -17,6 +17,8 @@ ESCALATION_KEYWORDS = [
     "no pago", "no puedo pagar", "sin dinero", "dificultad",
     "me voy", "me retiro", "abandono", "terminar contrato", "termino contrato",
     "devolver", "garantía", "garantia", "me voy a ir", "quiero salir",
+    "entregar", "entrego el", "desocupar", "me mudo", "nos mudamos",
+    "voy a dejar", "quiero dejar", "terminar el arriendo",
 ]
 
 PHYSICAL_PROBLEM_KEYWORDS = [
