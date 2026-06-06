@@ -19,23 +19,28 @@ ESCALATION_KEYWORDS = [
     "devolver", "garantía", "garantia", "me voy a ir", "quiero salir",
 ]
 
-BRIDGE_MESSAGES = [
-    "Déjame revisar tu caso y te respondo en unos minutos.",
-    "Ya lo reviso y te respondo enseguida.",
-    "Dame un momento que lo verifico y te cuento.",
+PHYSICAL_PROBLEM_KEYWORDS = [
+    "gotera", "gotear", "inundación", "inundacion", "incendio",
+    "no funciona", "roto", "rota", "descompuesto", "se rompió", "se rompio",
+    "daño", "daños", "accidente", "filtración", "filtracion",
 ]
 
 
 def should_escalate(message: str) -> bool:
-    """Determina si un mensaje debe ser escalado a Marcela."""
     msg_lower = message.lower()
     return any(kw in msg_lower for kw in ESCALATION_KEYWORDS)
 
 
-def get_bridge_message(client_name: str) -> str:
-    """Mensaje que se envía al cliente mientras Marcela toma el control."""
+def is_physical_problem(message: str) -> bool:
+    msg_lower = message.lower()
+    return any(kw in msg_lower for kw in PHYSICAL_PROBLEM_KEYWORDS)
+
+
+def get_bridge_message(client_name: str, message: str) -> str:
     first_name = client_name.split()[0] if client_name else ""
     greeting = f"{first_name}, " if first_name else ""
+    if is_physical_problem(message):
+        return f"{greeting}dame un momento que lo reviso. Mientras tanto, ¿puedes enviarme fotos o un video del problema?"
     return f"{greeting}déjame revisar tu caso y te respondo en unos minutos."
 
 

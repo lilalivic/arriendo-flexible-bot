@@ -35,7 +35,7 @@ async def receive_message(
     history = conversation_history.get(client_phone, [])
 
     if should_escalate(client_text):
-        bridge = get_bridge_message(client_name)
+        bridge = get_bridge_message(client_name, client_text)
         await send_whatsapp_message(client_phone, bridge)
         context_summary = _build_context_summary(history, client_text)
         await notify_marcela(client_name, client_phone, client_text, context_summary)
